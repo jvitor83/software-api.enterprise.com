@@ -1,0 +1,14 @@
+D:\WORK\teste\software-api.enterprise.com\SoftwareApi\obj\Debug\netcoreapp2.2\SoftwareApi.csproj.CoreCompileInputs.cache
+D:\WORK\teste\software-api.enterprise.com\SoftwareApi\obj\Debug\netcoreapp2.2\SoftwareApi.AssemblyInfoInputs.cache
+D:\WORK\teste\software-api.enterprise.com\SoftwareApi\obj\Debug\netcoreapp2.2\SoftwareApi.AssemblyInfo.cs
+D:\WORK\teste\software-api.enterprise.com\SoftwareApi\bin\Debug\netcoreapp2.2\SoftwareApi.deps.json
+D:\WORK\teste\software-api.enterprise.com\SoftwareApi\bin\Debug\netcoreapp2.2\SoftwareApi.runtimeconfig.json
+D:\WORK\teste\software-api.enterprise.com\SoftwareApi\bin\Debug\netcoreapp2.2\SoftwareApi.runtimeconfig.dev.json
+D:\WORK\teste\software-api.enterprise.com\SoftwareApi\bin\Debug\netcoreapp2.2\SoftwareApi.dll
+D:\WORK\teste\software-api.enterprise.com\SoftwareApi\bin\Debug\netcoreapp2.2\SoftwareApi.pdb
+D:\WORK\teste\software-api.enterprise.com\SoftwareApi\obj\Debug\netcoreapp2.2\SoftwareApi.csprojAssemblyReference.cache
+D:\WORK\teste\software-api.enterprise.com\SoftwareApi\obj\Debug\netcoreapp2.2\SoftwareApi.RazorAssemblyInfo.cache
+D:\WORK\teste\software-api.enterprise.com\SoftwareApi\obj\Debug\netcoreapp2.2\SoftwareApi.RazorAssemblyInfo.cs
+D:\WORK\teste\software-api.enterprise.com\SoftwareApi\obj\Debug\netcoreapp2.2\SoftwareApi.RazorTargetAssemblyInfo.cache
+D:\WORK\teste\software-api.enterprise.com\SoftwareApi\obj\Debug\netcoreapp2.2\SoftwareApi.dll
+D:\WORK\teste\software-api.enterprise.com\SoftwareApi\obj\Debug\netcoreapp2.2\SoftwareApi.pdb
