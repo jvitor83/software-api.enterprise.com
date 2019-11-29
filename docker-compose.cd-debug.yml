@@ -1,0 +1,8 @@
+version: '3.5'
+
+services:
+  software-api-enterprise-com:
+    image: ${DOCKER_REGISTRY}software-api.enterprise.com:${BRANCH:-develop}.${VERSION:-local}-debug
+    build:
+      target: debug
+

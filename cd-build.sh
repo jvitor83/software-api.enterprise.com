@@ -33,22 +33,35 @@ DOCKERCOMPOSE_BUILD_TEST_RESULT_PATH="/TestResults"
 #Build
 export SONARQUBE_URL="http://localhost:9000"
 export SONARQUBE_LOGIN=""
-export RUN_TEST="true"
+export RUN_TEST="false"
 export RUN_PROJECT="false"
 export RUN_SONARQUBE="true"
 export CONFIGURATION="Debug"
 
 
+echo ""
 echo "-----------------------------------------------------------------------"
-echo "Run docker-compose.cd-tests.yml"
-docker-compose -f "docker-compose.yml" -f "docker-compose.cd-tests.yml" up --build --abort-on-container-exit && \
-#docker-compose -f "docker-compose.yml" -f "docker-compose.cd-tests.yml" push && \
-echo "Extraindo os resultados dos testes" && \
-docker create --name $DOCKERCOMPOSE_BUILD_CONTAINER_NAME -v $DOCKERCOMPOSE_BUILD_VOLUME_NAME:$DOCKERCOMPOSE_BUILD_TEST_RESULT_PATH busybox && \
-docker cp $DOCKERCOMPOSE_BUILD_CONTAINER_NAME:$DOCKERCOMPOSE_BUILD_TEST_RESULT_PATH $ARTIFACT_STAGING_DIRECTORY/TestResults && \
-docker rm $DOCKERCOMPOSE_BUILD_CONTAINER_NAME
+echo "Run docker-compose.cd-debug.yml"
+docker-compose -f "docker-compose.yml" -f "docker-compose.cd-debug.yml" build
+#docker-compose -f "docker-compose.yml" -f "docker-compose.cd-debug.yml" push
+if [ $RUN_PROJECT == 'true' ]; then
+    docker-compose -f "docker-compose.yml" -f "docker-compose.cd-debug.yml" up
+fi
 echo "-----------------------------------------------------------------------"
 
+
+echo "-----------------------------------------------------------------------"
+echo "Run docker-compose.cd-tests.yml"
+docker-compose -f "docker-compose.yml" -f "docker-compose.cd-tests.yml" build
+#docker-compose -f "docker-compose.yml" -f "docker-compose.cd-tests.yml" push
+if [ $RUN_TEST == 'true' ]; then
+    docker-compose -f "docker-compose.yml" -f "docker-compose.cd-tests.yml" up --abort-on-container-exit
+    echo "Extraindo os resultados dos testes"
+    docker create --name $DOCKERCOMPOSE_BUILD_CONTAINER_NAME -v $DOCKERCOMPOSE_BUILD_VOLUME_NAME:$DOCKERCOMPOSE_BUILD_TEST_RESULT_PATH busybox
+    docker cp $DOCKERCOMPOSE_BUILD_CONTAINER_NAME:$DOCKERCOMPOSE_BUILD_TEST_RESULT_PATH $ARTIFACT_STAGING_DIRECTORY/TestResults
+    docker rm $DOCKERCOMPOSE_BUILD_CONTAINER_NAME
+fi
+echo "-----------------------------------------------------------------------"
 
 
 echo ""
@@ -57,12 +70,11 @@ echo "Run docker-compose.cd-build.yml"
 export DOCKERCOMPOSE_PUBLISH_VOLUME_NAME="app-extract-publish"
 export DOCKERCOMPOSE_PUBLISH_CONTAINER_NAME="container-publish"
 export DOCKERCOMPOSE_PUBLISH_APP_PATH="/var/release/"
-
-docker-compose -f "docker-compose.yml" -f "docker-compose.cd-build.yml" build && \
-#docker-compose -f "docker-compose.yml" -f "docker-compose.cd-build.yml" push && \
-echo "Extraindo o artefatos" && \
-docker create --name $DOCKERCOMPOSE_PUBLISH_CONTAINER_NAME -v $DOCKERCOMPOSE_PUBLISH_VOLUME_NAME:$DOCKERCOMPOSE_PUBLISH_APP_PATH busybox && \
-docker cp $DOCKERCOMPOSE_PUBLISH_CONTAINER_NAME:$DOCKERCOMPOSE_PUBLISH_APP_PATH $ARTIFACT_STAGING_DIRECTORY/artefatos && \
+docker-compose -f "docker-compose.yml" -f "docker-compose.cd-build.yml" build
+#docker-compose -f "docker-compose.yml" -f "docker-compose.cd-build.yml" push
+echo "Extraindo o artefatos"
+docker create --name $DOCKERCOMPOSE_PUBLISH_CONTAINER_NAME -v $DOCKERCOMPOSE_PUBLISH_VOLUME_NAME:$DOCKERCOMPOSE_PUBLISH_APP_PATH busybox
+docker cp $DOCKERCOMPOSE_PUBLISH_CONTAINER_NAME:$DOCKERCOMPOSE_PUBLISH_APP_PATH $ARTIFACT_STAGING_DIRECTORY/artefatos
 docker rm $DOCKERCOMPOSE_PUBLISH_CONTAINER_NAME
 echo "-----------------------------------------------------------------------"
 

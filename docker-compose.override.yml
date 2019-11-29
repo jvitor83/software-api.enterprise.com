@@ -1,11 +1,14 @@
 version: '3.5'
 
 services:
-  software-db-enterprise-com:
-    build:
-      target: build
-    ports:
-      - 5432:5432
+  software-api-enterprise-com:
     environment:
-      RUN_TEST: ${RUN_TEST:-false}
-      RUN_PROJECT: ${RUN_PROJECT:-true}
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_HTTPS_PORT=44361
+    ports:
+      - "56355:80"
+      - "44361:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro

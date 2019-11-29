@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
+  <PropertyGroup Label="Globals">
+    <ProjectVersion>2.1</ProjectVersion>
+    <DockerTargetOS>Linux</DockerTargetOS>
+    <ProjectGuid>fb53de57-6311-4881-ae3f-d774e1f67d18</ProjectGuid>
+    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
+    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/api/values</DockerServiceUrl>
+    <DockerServiceName>software</DockerServiceName>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="cd-build.sh" />
+    <None Include="cd-deploy.sh" />
+    <None Include="docker-compose.cd-build.yml" />
+    <None Include="docker-compose.cd-debug.yml" />
+    <None Include="docker-compose.cd-deploy.yml" />
+    <None Include="docker-compose.cd-runtime.yml" />
+    <None Include="docker-compose.cd-tests.yml" />
+    <None Include="docker-compose.env-alpha.yml" />
+    <None Include="docker-compose.env-beta.yml" />
+    <None Include="docker-compose.env-rc.yml" />
+    <None Include="docker-compose.env-stable.yml" />
+    <None Include="docker-compose.override.yml">
+      <DependentUpon>docker-compose.yml</DependentUpon>
+    </None>
+    <None Include="docker-compose.yml" />
+    <None Include=".dockerignore" />
+    <None Include="entrypoint-debug.sh" />
+    <None Include="entrypoint-tests.sh" />
+    <None Include="entrypoint.sh" />
+    <None Include="kubeconfig" />
+  </ItemGroup>
+</Project>

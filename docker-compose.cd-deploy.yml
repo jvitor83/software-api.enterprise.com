@@ -1,11 +1,11 @@
 version: '3.5'
 
 services:  
-  software-db-enterprise-com:
-    image: ${DOCKER_REGISTRY}software-db.enterprise.com:${BRANCH:-develop}.${VERSION:-local}-deploy
+  software-api-enterprise-com:
+    image: ${DOCKER_REGISTRY}software-api.enterprise.com:${BRANCH:-develop}.${VERSION:-local}-deploy
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Software/Dockerfile
       target: deploy
     environment:
       #----Kubernetes----
