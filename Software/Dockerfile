@@ -38,7 +38,7 @@ ENTRYPOINT ./entrypoint.sh
 
 #---------------Estágio usada para publicação (kubernetes/npm)
 FROM tjmt/publicador:latest AS deploy
-COPY . /var/release/source
+COPY . /var/release/source/
 
 
 FROM runtime AS final

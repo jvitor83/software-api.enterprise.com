@@ -3,9 +3,10 @@ rm -rf ./docker-extract/
 mkdir ./docker-extract/
 
 #Essas variaveis precisam estar na release também
-export DOCKER_REGISTRY=""
-export VERSION=$(date '+%Y%m%d')-1
-export BRANCH="develop"
+LOCAL_VERSION=$(date '+%Y%m%d')-1
+export VERSION=${VERSION:-${LOCAL_VERSION}}
+export DOCKER_REGISTRY=${DOCKER_REGISTRY:-}
+export BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
 
 
 echo "-----------------------------------------------------------------------"

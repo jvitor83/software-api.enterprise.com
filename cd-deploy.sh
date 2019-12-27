@@ -21,51 +21,51 @@ export NPM_EMAIL=""
 #----Kubernetes
 export DEPLOY_KUBERNETES="true"
 export DESTROY_KUBERNETES_ENVIRONMENT="false"
-export KUBERNETES_FOLDER="/var/release/source"
+export KUBERNETES_FOLDER="/var/release/source/"
 export KUBECONFIG_PATH="/var/release/source/kubeconfig"
 
 
  #----Kompose
-export DOCKER_REGISTRY=""
-export VERSION=$(date '+%Y%m%d')-1
-export BRANCH="develop"
+LOCAL_VERSION=$(date '+%Y%m%d')-1
+export VERSION=${VERSION:-${LOCAL_VERSION}}
+export DOCKER_REGISTRY=${DOCKER_REGISTRY:-}
+export BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
 export COMPOSE_PATH="" #Direfente para cada ambiente
 
 
 echo "---------Publico em alpha"
 export NUGET_LIFECYCLE_VERSION="alpha"
 export NPM_LIFECYCLE_VERSION="alpha"
-#export KUBECONFIG_PATH=""
 export COMPOSE_PATH="docker-compose.env-alpha.yml"
-docker-compose -f "docker-compose.cd-deploy.yml" up --abort-on-container-exit
+docker-compose -f "docker-compose.cd-deploy.yml" up --abort-on-container-exit --no-build
 docker-compose -f "docker-compose.cd-deploy.yml" down
 echo "-------------------------------------"
 
-echo "---------Publico em beta"
-export NUGET_LIFECYCLE_VERSION="beta"
-export NPM_LIFECYCLE_VERSION="beta"
-#export KUBECONFIG_PATH=""
-export COMPOSE_PATH="docker-compose.env-beta.yml"
-docker-compose -f "docker-compose.cd-deploy.yml" up --abort-on-container-exit
-docker-compose -f "docker-compose.cd-deploy.yml" down
-echo "-------------------------------------"
+# echo "---------Publico em beta"
+# export NUGET_LIFECYCLE_VERSION="beta"
+# export NPM_LIFECYCLE_VERSION="beta"
+# #export KUBECONFIG_PATH=""
+# export COMPOSE_PATH="docker-compose.env-beta.yml"
+# docker-compose -f "docker-compose.cd-deploy.yml" up --abort-on-container-exit --no-build
+# docker-compose -f "docker-compose.cd-deploy.yml" down
+# echo "-------------------------------------"
 
 
-echo "---------Publico em rc"
-export NUGET_LIFECYCLE_VERSION="rc"
-export NPM_LIFECYCLE_VERSION="rc"
-#export KUBECONFIG_PATH=""
-export COMPOSE_PATH="docker-compose.env-rc.yml"
-docker-compose -f "docker-compose.cd-deploy.yml" up --abort-on-container-exit
-docker-compose -f "docker-compose.cd-deploy.yml" down
-echo "-------------------------------------"
+# echo "---------Publico em rc"
+# export NUGET_LIFECYCLE_VERSION="rc"
+# export NPM_LIFECYCLE_VERSION="rc"
+# #export KUBECONFIG_PATH=""
+# export COMPOSE_PATH="docker-compose.env-rc.yml"
+# docker-compose -f "docker-compose.cd-deploy.yml" up --abort-on-container-exit --no-build
+# docker-compose -f "docker-compose.cd-deploy.yml" down
+# echo "-------------------------------------"
 
 
-echo "---------Publico em prod (stable)"
-export NUGET_LIFECYCLE_VERSION=""
-export NPM_LIFECYCLE_VERSION=""
-#export KUBECONFIG_PATH=""
-export COMPOSE_PATH="docker-compose.env-stable.yml"
-docker-compose -f "docker-compose.cd-deploy.yml" up --abort-on-container-exit
-docker-compose -f "docker-compose.cd-deploy.yml" down
-echo "-------------------------------------"
+# echo "---------Publico em prod (stable)"
+# export NUGET_LIFECYCLE_VERSION=""
+# export NPM_LIFECYCLE_VERSION=""
+# #export KUBECONFIG_PATH=""
+# export COMPOSE_PATH="docker-compose.env-stable.yml"
+# docker-compose -f "docker-compose.cd-deploy.yml" up --abort-on-container-exit --no-build
+# docker-compose -f "docker-compose.cd-deploy.yml" down
+# echo "-------------------------------------"

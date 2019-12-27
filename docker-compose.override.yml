@@ -2,6 +2,8 @@ version: '3.5'
 
 services:
   software-api-enterprise-com:
+    build:
+      target: debug
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
