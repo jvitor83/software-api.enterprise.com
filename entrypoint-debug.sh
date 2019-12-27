@@ -2,4 +2,5 @@
 
 
 echo "Iniciando entrypoint"
-dotnet run --project Software
+echo "dotnet run --project $PROJECT_NAME"
+dotnet run --project $PROJECT_NAME

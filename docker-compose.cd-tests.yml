@@ -11,13 +11,13 @@ services:
       SONARQUBE_URL: ${SONARQUBE_URL:-http://172.17.0.1:9000}
       SONARQUBE_LOGIN: ${SONARQUBE_LOGIN}
       SONARQUBE_PROJECT: software-api.enterprise.com
-      SONARQUBE_PROJECT_VERSION: ${VERSION:-local}
+      SONARQUBE_PROJECT_VERSION: ${BRANCH:-develop}.${VERSION:-local}
     volumes:
       - test-result:/TestResults
 
 volumes:
   test-result:
-    name: ${DOCKERCOMPOSE_CI_VOLUME_NAME:-app-test-results}
+    name: ${DOCKERCOMPOSE_TESTS_VOLUME_NAME:-app-test-results}
 
 networks:
   default:

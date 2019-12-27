@@ -23,20 +23,18 @@ echo "-----------------------------------------------------------------------"
 #echo "-----------------------------------------------------------------------"
 
 
-
 #Variaveis locais, utilizado para copiar os arquivos do container
 ARTIFACT_STAGING_DIRECTORY="./docker-extract"
-DOCKERCOMPOSE_BUILD_VOLUME_NAME="app-extract-testresults"
-DOCKERCOMPOSE_BUILD_CONTAINER_NAME="container-testResults"
-DOCKERCOMPOSE_BUILD_TEST_RESULT_PATH="/TestResults"
+DOCKERCOMPOSE_TESTS_VOLUME_NAME="app-test-results"
+DOCKERCOMPOSE_TESTS_CONTAINER_NAME="container-testresults"
+DOCKERCOMPOSE_TESTS_TEST_RESULT_PATH="/TestResults"
 
 #Build
-export SONARQUBE_URL="http://localhost:9000"
-export SONARQUBE_LOGIN=""
-export RUN_TEST="false"
-export RUN_PROJECT="false"
-export RUN_SONARQUBE="true"
-export CONFIGURATION="Debug"
+export RUN_PROJECT=${RUN_PROJECT:-false}
+export RUN_TEST=${RUN_TEST:-false}
+export RUN_SONARQUBE=${RUN_SONARQUBE:-true}
+export SONARQUBE_URL=${SONARQUBE_URL:-http://172.17.0.1:9000}
+export SONARQUBE_LOGIN=${SONARQUBE_LOGIN}
 
 
 echo ""
@@ -57,9 +55,9 @@ docker-compose -f "docker-compose.yml" -f "docker-compose.cd-tests.yml" build
 if [ $RUN_TEST == 'true' ]; then
     docker-compose -f "docker-compose.yml" -f "docker-compose.cd-tests.yml" up --abort-on-container-exit
     echo "Extraindo os resultados dos testes"
-    docker create --name $DOCKERCOMPOSE_BUILD_CONTAINER_NAME -v $DOCKERCOMPOSE_BUILD_VOLUME_NAME:$DOCKERCOMPOSE_BUILD_TEST_RESULT_PATH busybox
-    docker cp $DOCKERCOMPOSE_BUILD_CONTAINER_NAME:$DOCKERCOMPOSE_BUILD_TEST_RESULT_PATH $ARTIFACT_STAGING_DIRECTORY/TestResults
-    docker rm $DOCKERCOMPOSE_BUILD_CONTAINER_NAME
+    docker create --name $DOCKERCOMPOSE_TESTS_CONTAINER_NAME -v $DOCKERCOMPOSE_TESTS_VOLUME_NAME:$DOCKERCOMPOSE_TESTS_TEST_RESULT_PATH busybox
+    docker cp $DOCKERCOMPOSE_TESTS_CONTAINER_NAME:$DOCKERCOMPOSE_TESTS_TEST_RESULT_PATH $ARTIFACT_STAGING_DIRECTORY/TestResults
+    docker rm $DOCKERCOMPOSE_TESTS_CONTAINER_NAME
 fi
 echo "-----------------------------------------------------------------------"
 

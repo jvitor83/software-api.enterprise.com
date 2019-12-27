@@ -16,12 +16,12 @@ if [[ ${RUN_SONARQUBE} = "true" ]]; then
     echo "Sonar properties"
     echo "SONARQUBE_PROJECT: $SONARQUBE_PROJECT"
     echo "SONARQUBE_PROJECT_VERSION: $SONARQUBE_PROJECT_VERSION"
-    echo "SONARQUBE_URL: $SONARQUBE_URL"        
+    echo "SONARQUBE_URL: $SONARQUBE_URL"
     echo "-------------------------------------------------------"
 
     #dotnet sonarscanner não aceita SONARQUBE_PASSWORD em branco
     #/d:sonar.password=$SONARQUBE_PASSWORD
-    dotnet sonarscanner begin /k:"$SONARQUBE_PROJECT" /v:"$SONARQUBE_PROJECT_VERSION" /d:sonar.login=$SONARQUBE_LOGIN /d:sonar.host.url=${SONARQUBE_URL} /d:sonar.cs.vstest.reportsPaths="${RESULT_PATH}*.trx" /d:sonar.cs.opencover.reportsPaths="${COVERAGE_PATH}**/coverage.opencover.xml" || true;
+    dotnet sonarscanner begin /k:"$SONARQUBE_PROJECT" /v:"$SONARQUBE_PROJECT_VERSION" /d:sonar.login="${SONARQUBE_LOGIN}" /d:sonar.host.url=${SONARQUBE_URL} /d:sonar.cs.vstest.reportsPaths="/TestResults/result/vsTest/*.trx" /d:sonar.cs.opencover.reportsPaths="/TestResults/codecoverage/**/coverage.opencover.xml" || true;
 fi
 
 #code coverage para testes de integraçao
@@ -40,11 +40,11 @@ echo "-------------------------------------------------------"
 
 #necessário rodar o dotnet build entre o begin e end do sonarqube
 echo "Iniciando dotnet build $SOLUTION_NAME"
-dotnet build $SOLUTION_NAME -v m --no-restore
+dotnet build $SOLUTION_NAME -v m
 
 echo "Iniciando dotnet test $SOLUTION_NAME"
 #https://github.com/tonerdo/coverlet/issues/37  => Coverage report is not generated if there are any failing tests
-dotnet test $SOLUTION_NAME --no-build --no-restore -v m --logger "trx;LogFileName=TestResults.trx" --results-directory $RESULT_PATH /p:CollectCoverage=true /p:CoverletOutput=$COVERAGE_PATH "/p:CoverletOutputFormat=\"${CoverletOutputFormat}\"" || true;
+dotnet test $SOLUTION_NAME --no-build --no-restore -v m --logger "trx;LogFileName=TestResults.trx" --results-directory /TestResults/result/vsTest/ --collect:"XPlat Code Coverage" /p:CollectCoverage=true /p:CoverletOutput=/TestResults/codecoverage/ "/p:CoverletOutputFormat=\"${CoverletOutputFormat}\"" || true;
 
 
 #Para gerar covertura de código mesmo com teste falhando, usar coverlet
@@ -52,9 +52,9 @@ dotnet test $SOLUTION_NAME --no-build --no-restore -v m --logger "trx;LogFileNam
 #https://www.nuget.org/packages/coverlet.console/
 
 #https://danielpalme.github.io/ReportGenerator/usage.html
-echo 'Iniciando reportgenerator'
-reportgenerator "-reports:${COVERAGE_PATH}coverage.cobertura.xml" "-targetdir:$COVERAGE_REPORT_PATH" -reporttypes:"HTMLInline" -verbosity:Error || true;
+#echo 'Iniciando reportgenerator'
+#reportgenerator "-reports:${COVERAGE_PATH}coverage.cobertura.xml" "-targetdir:$COVERAGE_REPORT_PATH" -reporttypes:"HTMLInline" -verbosity:Error || true;
 
 if [[ ${RUN_SONARQUBE} = "true" ]]; then
-    dotnet sonarscanner end /d:sonar.login="${SONAR_LOGIN}" || true;    
+    dotnet sonarscanner end /d:sonar.login="${SONARQUBE_LOGIN}" || true;    
 fi
